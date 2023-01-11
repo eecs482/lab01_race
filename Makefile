@@ -1,5 +1,5 @@
 all:
-	g++ race.cpp -o race
+	g++ race.cpp -pthread -o race
 
 clean:
 	rm race
