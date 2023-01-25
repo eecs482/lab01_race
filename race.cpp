@@ -2,6 +2,7 @@
 #include <thread>
 #include <mutex>
 #include <vector>
+#include <memory>
 
 const int NUM_THREADS = 2;
 const int NUM_ITER = 20;
@@ -18,18 +19,15 @@ void child() {
 }
 
 int main() {
-    std::vector<std::thread> threads;
+    std::vector<std::unique_ptr<std::thread>> threads;
 
-    for (int i=0; i < NUM_THREADS; i++) {
-        threads.emplace_back(child);
-        // This is an equivalent and simpler way to write
-        // threads.push_back(thread(child));
+    for (int i = 0; i < NUM_THREADS; i++) {
+        threads.push_back(std::make_unique<std::thread>(child));
     }
 
     for (auto &t : threads) {
-        t.join();
+        t->join();
     }
 
     std::cout << "counter = " << counter << std::endl;
 }
-
