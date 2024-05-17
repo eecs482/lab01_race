@@ -1,5 +1,5 @@
 all:
-	g++ -std=c++20 race.cpp libthread.o -o race
+	g++ -std=c++20 -ldl -pthread race.cpp libthread.o -o race
 
 clean:
 	rm race
