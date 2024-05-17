@@ -5,12 +5,12 @@
 
 #include <vector>
 
-const int NUM_THREADS = 2;
-const int NUM_ITER = 20;
+const int NUM_THREADS = 4;
+const int NUM_ITER = 1000;
 
 int counter = 0;
-mutex counter_mutex;
-
+// mutex counter_mutex;
+//
 void child(uintptr_t) {
     for (int i=0; i < NUM_ITER; i++) {
         // counter_mutex.lock();
