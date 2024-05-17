@@ -1,33 +1,38 @@
 #include <iostream>
-#include <thread>
-#include <mutex>
+#include "thread.h"
+#include "mutex.h"
+#include "cpu.h"
+
 #include <vector>
-#include <memory>
 
 const int NUM_THREADS = 2;
 const int NUM_ITER = 20;
 
 int counter = 0;
-std::mutex counter_mutex;
+mutex counter_mutex;
 
-void child() {
+void child(uintptr_t) {
     for (int i=0; i < NUM_ITER; i++) {
-        counter_mutex.lock();
+        // counter_mutex.lock();
         counter++;
-        counter_mutex.unlock();
+        // counter_mutex.unlock();
     }
 }
 
-int main() {
-    std::vector<std::unique_ptr<std::thread>> threads;
+void boot(uintptr_t){
+    std::vector<thread> threads;
 
     for (int i = 0; i < NUM_THREADS; i++) {
-        threads.push_back(std::make_unique<std::thread>(child));
+        threads.push_back(thread(child,0));
     }
 
     for (auto &t : threads) {
-        t->join();
+        t.join();
     }
-
     std::cout << "counter = " << counter << std::endl;
+}
+
+int main() {
+    cpu::boot(boot,0,0);
+
 }
